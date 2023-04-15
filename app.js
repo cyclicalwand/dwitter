@@ -1,4 +1,4 @@
- // load dyson vue store and subscribe to updates
+// load dyson vue store and subscribe to updates
               DysonLoader().then(() => {
                 console.log("DysonLoader loaded");
               });
@@ -22,10 +22,11 @@
                     userData: "",
                     loading: true,
                     showOnlyMyPosts: false,
+                    api: 'https://dys-api.dysonprotocol.com/dyson/storageprefix',
                   }
                 },
                 async created() {
-                  const response = await fetch('https://dys-api.dysonprotocol.com/dyson/storageprefix' + '?' + new URLSearchParams({
+                  const response = await fetch(this.api + '?' + new URLSearchParams({
                     "prefix": "dys178nsz4x7f3rew089w35cuhsfuxqwf7kc98y2tt/usernames/"
                   }));
                   const json = await response.json();
@@ -44,7 +45,7 @@
                   },
                   
                   async getUserData() {
-                    response = await fetch('https://dys-api.dysonprotocol.com/dyson/storageprefix' + '?' + new URLSearchParams({
+                    response = await fetch(this.api + '?' + new URLSearchParams({
                     "prefix": "dys178nsz4x7f3rew089w35cuhsfuxqwf7kc98y2tt/user/" + this.accountData.bech32Address
                     }))
                     const json = await response.json()
@@ -190,7 +191,7 @@
                   if (window.getOfflineSigner) {
                     try {
                       const response = await fetch(
-                        "https://dys-api.dysonprotocol.com/dyson/storageprefix" +
+                        this.api +
                         "?" +
                         new URLSearchParams({
                           prefix: "dys1c2t867e7x33jw8c8mrl6cdvn89934k82tjvnqr/post/",
@@ -215,7 +216,7 @@
                     // Run when keplr is not installed
                     try {
                       const response = await fetch(
-                      "https://dys-api.dysonprotocol.com/dyson/storageprefix" +
+                      this.api +
                       "?" +
                       new URLSearchParams({
                         prefix: "dys1c2t867e7x33jw8c8mrl6cdvn89934k82tjvnqr/post/",
@@ -267,7 +268,7 @@
                   },
                   
                   isUserLoggedIn() {
-                   // disable showOnlyMyPost button
+                    // Disable showOnlyMyPost button
                     return !!this.accountData && !!this.accountData.bech32Address;
                   },
                   
