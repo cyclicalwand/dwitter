@@ -267,6 +267,7 @@
                   },
                   
                   isUserLoggedIn() {
+                   // disable showOnlyMyPost button
                     return !!this.accountData && !!this.accountData.bech32Address;
                   },
                   
