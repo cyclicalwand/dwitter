@@ -6,23 +6,9 @@
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter/style.css">
             <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
             <script src="/_/dyson.js"></script>
-            <style>
-              .wrapper {
-                overflow: hidden;
-                word-wrap: break-word;
-              }
-              .center-box {
-                width: 300px;
-                height: 75px;
-                background-color: #f2f2f2;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-              }
-            </style>
           </head>
           <body id="app" class="wrapper">
             <div v-if="loading" class="center-box">
@@ -134,6 +120,15 @@
             </div>
             <div class="column is-four-fifths">
               <div class="content">
+                <div v-if="showResultsBox" class="result-box">
+                <div class="card">
+                  <div class="card-content">
+                    <div class="content" v-text="resultText">
+                    </div>
+                    <button class="button" @click="hideResultBox">Close</button>
+                  </div>
+                </div>
+              </div>
               <h1 class="title">Submit a new post</h1>
               <form>
                 <textarea v-model="newPost" class="textarea is-primary" id="newPost" maxlength="400" placeholder="Submit a post"></textarea>
@@ -147,6 +142,7 @@
                     </button>
                 </div>
               </form>
+              </div>
             <h1 class="is-size-4 has-text-left">Current posts</h1>
             <p>Number of posts: {{ Object.keys(sortedStorage).length }}</p>
             <p>
@@ -205,7 +201,6 @@
                         </button>
                       </div>
                     </form>
-                    <p id="output" v-text="output"></p>
                   </div>
                 </div>  
               </div>
@@ -213,9 +208,9 @@
             </div>
           </div>
         </div>
-        </div>
       </section>
-     <footer class="footer has-text-centered">Dyson message board</footer>
-    </div>
-   </body>
-  </html>
+      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@v1.1.0/testnetapp.js"></script>
+    <footer class="footer has-text-centered">Dyson message board</footer>
+   </div>
+  </body>
+ </html>

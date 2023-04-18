@@ -12,3 +12,11 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.result-box {
+  position: fixed;
+  top: 16%;
+  left: 50%;
+  z-index: 999;
+  transform: translateX(-50%);
+}
