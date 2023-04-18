@@ -22,6 +22,8 @@
                     userData: "",
                     loading: true,
                     showOnlyMyPosts: false,
+                    resultText: "",
+                    showResultsBox: false,
                     api: 'https://dys-api.dysonprotocol.com/dyson/storageprefix',
                   }
                 },
@@ -41,6 +43,25 @@
                       return match ? match.username : address;
                     } else {
                       return address;
+                    }
+                  },
+                  
+                  async getData() {
+                     try {
+                      const response = await fetch(
+                      this.api +
+                      "?" +
+                      new URLSearchParams({
+                        prefix: "dys1c2t867e7x33jw8c8mrl6cdvn89934k82tjvnqr/post/",
+                      })
+                      );
+                      const json = await response.json();
+                      this.result = json;
+                      this.result.storage.forEach((item) => {
+                        item.data = JSON.parse(item.data);
+                      });
+                    } catch(error) {
+                      console.log(error)
                     }
                   },
                   
@@ -82,6 +103,11 @@
                     this.isMenuActive = !this.isMenuActive;
                   },
                   
+                  hideResultBox() {
+                    this.showResultsBox = false;
+                    this.resultText = "";
+                  },
+                  
                 async submit() {
                   try {
                     if (!this.accountData) {
@@ -103,16 +129,22 @@
                       const rawLogs = JSON.parse(result.rawLog);
                       const valueObject = JSON.parse(rawLogs[0].events[1].attributes[0].value);
                       console.log(`Result: ` + JSON.stringify(valueObject.result) + `\nTX Hash: ` + result.transactionHash);
-                      alert(`Result: ` + JSON.stringify(valueObject.result) + `\nTX Hash: ${result.transactionHash}`);
-                      location.reload();
+                      
+                      // Output result
+                      this.resultText = `Result: ${JSON.stringify(valueObject.result)} - TX Hash: ${result.transactionHash}`;
+                      this.showResultsBox = true;
+                      
+                      // Reload the dom and empty newPost
+                      await this.getData();
+                      this.newPost = "";
                     }
                   } catch (error) {
                       console.log(error);
-                      alert(`Submit error: ${error.message}`);
+                      this.resultText = `Result: ${error}`;
+                      this.showResultsBox = true;
                     }
                 },
 
-                  
                   async submitReply(id, item) {
                     try {
                       if (!this.accountData) {
@@ -127,21 +159,33 @@
                               "kwargs": JSON.stringify({ "body": item.newReply, "post_id": id }),
                               "coins": ""
                             },
-                            "fee": [{ amount: '50', denom: 'dys' }],
-                            "gas": "500000"
+                            "fee": [{ amount: '100', denom: 'dys' }],
+                            "gas": "1000000"
                         });
-
+                        
+                        if (result.code !== 0) {
+                          // transaction failed, display error message to user
+                          this.resultText = `Result: ${result.rawLog} - TX Hash: ${result.transactionHash}`;
+                          this.showResultsBox = true;
+                          return;
+                        }
+                        
                         const rawLogs = JSON.parse(result.rawLog);
                         const valueObject = JSON.parse(rawLogs[0].events[1].attributes[0].value);
-                        
                         console.log(`Result: ` + JSON.stringify(valueObject.result) + `\nTX Hash: ` + result.transactionHash);
-                        alert(`Result: ` + JSON.stringify(valueObject.result) + `\nTX Hash: ${result.transactionHash}`);
                         
-                        location.reload();
+                        // Output result
+                        this.resultText = `Result: ${JSON.stringify(valueObject.result)} - TX Hash: ${result.transactionHash}`;
+                        this.showResultsBox = true;
+                        
+                        // Reload the dom and empty newPost
+                        await this.getData();
+                        this.newReply = "";
                       }
                     } catch (error) {
                       console.log(error);
-                      alert(`Reply error: ${error.message}`);
+                      this.resultText = `Result: ${error}`;
+                      this.showResultsBox = true;
                     }
                   },
 
@@ -169,14 +213,18 @@
                         const valueObject = JSON.parse(rawLogs[0].events[1].attributes[0].value);
                         
                         console.log(`Result: ` + JSON.stringify(valueObject.result) + `\nTX Hash: ` + result.transactionHash);
-                        alert(`Result: ` + JSON.stringify(valueObject.result) + `\nTX Hash: ${result.transactionHash}`);
                         
-                        
-                        location.reload();
+                        // Output result
+                      this.resultText = `Result: ${JSON.stringify(valueObject.result)} - TX Hash: ${result.transactionHash}`;
+                      this.showResultsBox = true;
+                      
+                      // Reload the dom and empty newPost
+                      await this.getData();
                       }
                     } catch (error) {
                       console.log(error);
-                      alert(`Delete error: ${error.message}`);
+                      this.resultText = `Result: ${error}`;
+                      this.showResultsBox = true;
                     }
                   },
 
@@ -268,7 +316,6 @@
                   },
                   
                   isUserLoggedIn() {
-                    // Disable showOnlyMyPost button
                     return !!this.accountData && !!this.accountData.bech32Address;
                   },
                   
