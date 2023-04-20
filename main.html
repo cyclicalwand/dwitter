@@ -6,7 +6,7 @@
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@v1.1.0/style.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter/style.css">
             <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
             <script src="/_/dyson.js"></script>
           </head>
@@ -192,13 +192,24 @@
                           </span>
                         </button>
                         </div>
-                        <div class="buttons is-right">
-                        <button class="button is-danger is-oulined" @click.prevent="deletePost(item.data.id)">
+                        <div class="buttons is-right" v-if="!item.showConfirmation">
+                        <button class="button is-danger is-oulined" @click.prevent="item.showConfirmation = true">
                           <span>Delete</span>
                           <span class="icon is-small">
                             <i class="fa fa-times fa-lg"></i>
                           </span>
                         </button>
+                      </div>
+                      <div v-if="item.showConfirmation">
+                        <p>Are you sure you want to delete this post?</p>
+                        <div class="buttons is-right">
+                          <button class="button is-danger is-oulined" @click.prevent="deletePost(item.data.id)">
+                            <span>Yes</span>
+                          </button>
+                          <button class="button is-primary is-oulined" @click.prevent="item.showConfirmation = false">
+                            <span>No</span>
+                          </button>
+                        </div>
                       </div>
                     </form>
                   </div>
@@ -209,7 +220,7 @@
           </div>
         </div>
       </section>
-      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@v1.1.0/testnetapp.js"></script>
+      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter/testnetapp.js"></script>
     <footer class="footer has-text-centered">Dyson message board</footer>
    </div>
   </body>
