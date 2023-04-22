@@ -6,10 +6,10 @@
             <meta name="viewport" content="width=device-width, initial-scale=1" />
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter/style.css">
             <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
             <script src="/_/dyson.js"></script>
-          </head>
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@v2.0.0/style.css">
+            </head>
           <body id="app" class="wrapper">
             <div v-if="loading" class="center-box">
               <div class="box">
@@ -110,13 +110,19 @@
                         <img class="is-rounded" :src="userData.profile_photo" alt="profile photo">
                       </figure>
                       <p class="is-size-4">{{ userData.username }}</p>
+                      <button class="button is-primary is-light" @click.prevent="disconnectKeplr">
+                        <strong>Disconnect wallet</strong>
+                      </button>
                     </div>
                     <div v-else>
                       <p>Account name: {{ accountData.name }}</p>
+                      <button class="button is-primary is-light" @click.prevent="disconnectKeplr">
+                        <strong>Disconnect wallet</strong>
+                      </button>
                     </div>
-                  </div>
                 </div>
               </div>
+            </div>
             </div>
             <div class="column is-four-fifths">
               <div class="content">
@@ -169,17 +175,39 @@
                 <p>Post id: {{ item.data.id }}</p>
                 <p>Author: {{ getUsernameFromAddress(item.data.author) }}</p>
                  <p>Message: {{ item.data.body }}</p>
+              <div v-if="item.data && item.data.replies">
                 <h2 class="is-size-5">Replies</h2>
-                <p v-if="item.data && item.data.replies">Number of replies: {{ Object.values(item.data.replies).length }}</p>
+                <p>Number of replies: {{ Object.values(item.data.replies).length }}</p>
+                <span v-if="!item.showReplies">
+                  <button class="button is-info is-outlined is-small mb-2" @click.prevent="item.showReplies = true">
+                    Show replies
+                  </button>
+                </span>
+                <span v-if="item.showReplies">
+                  <button class="button is-info is-outlined is-small mb-2" @click.prevent="item.showReplies = false">
+                    Hide replies
+                  </button>
+                </span>
+              </div>
+              <div v-if="item.showReplies">
                 <div v-if="item.data && item.data.replies" v-for="reply in item.data.replies" class="card mb-2">
                   <div class="card-content">
                     <div class="content">
                       <p>Date: {{ reply.date }}</p>
                       <p>Author: {{ getUsernameFromAddress(reply.author) }}</p>
                       <p>Message: {{ reply.body }}</p>
+                      <div class="buttons is-right">
+                        <button class="button is-danger is-small is-oulined" @click.prevent="deleteReply(item.data.id, reply.reply_id)">
+                          <span>Delete reply</span>
+                          <span class="icon is-small">
+                            <i class="fa fa-times fa-lg"></i>
+                          </span>
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>
+              </div>
                   <div>
                     <form>
                       <textarea v-model="item.newReply" class="textarea" maxlength="400" placeholder="submit a reply"></textarea>
@@ -194,7 +222,7 @@
                         </div>
                         <div class="buttons is-right" v-if="!item.showConfirmation">
                         <button class="button is-danger is-oulined" @click.prevent="item.showConfirmation = true">
-                          <span>Delete</span>
+                          <span>Delete post</span>
                           <span class="icon is-small">
                             <i class="fa fa-times fa-lg"></i>
                           </span>
@@ -220,8 +248,8 @@
           </div>
         </div>
       </section>
-      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter/testnetapp.js"></script>
-    <footer class="footer has-text-centered">Dyson message board</footer>
-   </div>
-  </body>
- </html>
+      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@2.0.0/testnetapp.js"></script>
+      <footer class="footer has-text-centered">Dyson message board</footer>
+            </div>
+          </body>
+        </html>
