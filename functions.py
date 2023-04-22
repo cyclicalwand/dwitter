@@ -61,7 +61,7 @@ def add_reply(body: str, post_id: str):
         "body": body,
         "author": CALLER,
         "date": date_time_str,
-        #   "reply_id": reply_id_str,
+        "reply_id": reply_id_str,
     }
 
     parent_data["replies"].append(reply)
