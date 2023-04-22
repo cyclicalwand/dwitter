@@ -26,7 +26,8 @@
                     showResultsBox: false,
                     api: 'https://dys-api.dysonprotocol.com/dyson/storageprefix',
                     showConfirmation: false,
-                    
+                    replyId: "",
+                    showReplies: false,
                   }
                 },
                 
@@ -151,6 +152,14 @@
                   },
                   
                   /**
+                   * Disconnect from keplr by setting accountData to an empty object
+                   */
+                   disconnectKeplr() {
+                     this.accountData = {};
+                     this.isConnected = false;
+                   },
+                  
+                  /**
                    * Display normal menu or burger menu depending on screen size
                    */
                   toggleMenu() {
@@ -170,7 +179,7 @@
                  */
                 async submit() {
                   try {
-                    if (!this.accountData) {
+                    if (!this.isConnected) {
                       // User is not connected. Show message and connect to Keplr.
                       this.resultText = `Connect your wallet to submit a post.`;
                       this.showResultsBox = true;
@@ -226,13 +235,13 @@
                   */
                   async submitReply(id, item) {
                     try {
-                      if (!this.accountData) {
+                      if (!this.isConnected) {
                         // User not connected, show message and connect to Keplr
                         this.resultText = `Connect your wallet to reply.`;
                         this.showResultsBox = true;
                         await this.connectToKeplr();
                       } else {
-                        if(item.newReply.length >= 6) {
+                        if(item.newReply && item.newReply.length >= 6) {
                           // Check reply is at least 6 characters long and post to blockchain  
                           const result = await dysonVueStore.dispatch("dyson/sendMsgRun", {
                             "value": {
@@ -289,7 +298,7 @@
                    */ 
                   async deletePost(id) {
                     try {
-                      if (this.accountData == null) {
+                      if (!this.isConnected) {
                         // User not connected, show message and connect to Keplr
                         this.resultText = `Connect your wallet to delete a post.`;
                         this.showResultsBox = true;
@@ -325,10 +334,54 @@
                       this.resultText = `Result: ${error}`;
                       this.showResultsBox = true;
                       
-                      // Reset show confirmation.
-                      this.showConfirmation = false;
                     }
                   },
+                  
+                  /**
+                   * Delete replies from posts and replace with a different body message
+                   * 
+                   * @param {string} id - The post id of the reply
+                   * @param {string} replyId - The reply id to delete
+                   */
+                   async deleteReply(id, replyId) {
+                     try{
+                       if (!this.isConnected) {
+                        // User not connected, show message and connect to Keplr
+                        this.resultText = `Connect your wallet to delete a reply.`;
+                        this.showResultsBox = true;
+                        await this.connectToKeplr();
+                        } else {
+                          // Delete message from storage.
+                          const result = await dysonVueStore.dispatch("dyson/sendMsgRun", {
+                            "value": {
+                              "creator": this.accountData.bech32Address,
+                              "address": "dys1c2t867e7x33jw8c8mrl6cdvn89934k82tjvnqr", // your script
+                              "function_name": "delete_replies",
+                              "kwargs": JSON.stringify({ "post_id": id, "reply_id": replyId }),
+                              "coins": ""
+                            },
+                            "fee": [{ amount: '50', denom: 'dys' }], gas: "500000"
+                          });
+                        
+                          // Get the result of the transaction
+                          const rawLogs = JSON.parse(result.rawLog);
+                          const valueObject = JSON.parse(rawLogs[0].events[1].attributes[0].value);
+                        
+                          console.log(`Result: ` + JSON.stringify(valueObject.result) + `\nTX Hash: ` + result.transactionHash);
+                        
+                          // Output result
+                          this.resultText = `Result: ${JSON.stringify(valueObject.result)} - TX Hash: ${result.transactionHash}`;
+                          this.showResultsBox = true;
+                      
+                          // Reload the dom and empty newPost
+                          await this.getData();
+                        }
+                      } catch (error) {
+                        console.log(error);
+                        this.resultText = `Result: ${error}`;
+                        this.showResultsBox = true;
+                      }
+                   },
 
                   
                  },
