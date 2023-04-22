@@ -18,6 +18,7 @@ hour = now.hour
 minute = now.minute
 
 date_time_str = f"{day:02d}/{month:02d}/{year}  -  {hour:02d}:{minute:02d}"
+reply_id_str = f"{day:02d}{month:02d}{year}{hour:02d}{minute:02d}"
 
 
 def new_post(body: str):
@@ -60,6 +61,7 @@ def add_reply(body: str, post_id: str):
         "body": body,
         "author": CALLER,
         "date": date_time_str,
+        #   "reply_id": reply_id_str,
     }
 
     parent_data["replies"].append(reply)
@@ -103,11 +105,65 @@ def delete_post(post_id: str):
         return ["Error, you are not the original author"]
 
 
+def delete_replies(post_id: str, reply_id: str):
+
+    # Retrieve the parent data object
+    parent_query = _chain(
+        "dyson/QueryStorage",
+        index=script_creator + "/post/" + post_id,
+    )
+    if parent_query["error"]:
+        return parent_query["error"]
+    # Get the data from stotrage
+    parent_data = json.loads(parent_query["result"]["storage"]["data"])
+
+    # Find the matching reply
+    reply_index = None
+    for i, reply in enumerate(parent_data["replies"]):
+        if reply["reply_id"] == reply_id:
+            reply_index = i
+            break
+
+    if reply_index is not None:
+        original_author = parent_data["replies"][reply_index]["author"]
+
+        # Check if the caller is authorized to delete the reply
+        if CALLER == script_creator:
+            # Update the reply fields
+            parent_data["replies"][reply_index][
+                "body"
+            ] = "This message was deleted by admin"
+            parent_data["replies"][reply_index]["author"] = "Deleted"
+            parent_data["replies"][reply_index]["date"] = "N/A"
+
+            return _chain(
+                "dyson/sendMsgUpdateStorage",
+                creator=script_creator,
+                index=script_creator + "/post/" + post_id,
+                data=json.dumps(parent_data),
+            )
+        elif CALLER == original_author:
+            # Update the reply fields
+            parent_data["replies"][reply_index][
+                "body"
+            ] = "This message has been deleted"
+            parent_data["replies"][reply_index]["author"] = "Deleted"
+            parent_data["replies"][reply_index]["date"] = "N/A"
+
+            return _chain(
+                "dyson/sendMsgUpdateStorage",
+                creator=script_creator,
+                index=script_creator + "/post/" + post_id,
+                data=json.dumps(parent_data),
+            )
+        else:
+            return "Error: You are not authorized to delete this reply."
+
 html = [
     Template(
         """
-        
-        """
+
+	"""
     )
     .safe_substitute()
     .encode()
