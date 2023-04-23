@@ -108,9 +108,7 @@
                    * Get data from the api to display posts and replys.
                    */
                   async getData() {
-                    this.loading = true;
                     await this.fetchDataFromApiAndParse();
-                    this.loading = false;
                   },
                   
                   /**
