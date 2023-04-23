@@ -70,11 +70,10 @@
                   },
                   
                   /**
-                   * Get data from the api to display posts and replys.
-                   */
-                  async getData() {
-                     try {
-                      // fetch data from the server
+                   * Fetch data fromthe api and parse in to app
+                   */ 
+                  async fetchDataFromApiAndParse() {
+                    try {
                       const response = await fetch(
                       this.api +
                       "?" +
@@ -82,18 +81,34 @@
                         prefix: "dys1c2t867e7x33jw8c8mrl6cdvn89934k82tjvnqr/post/",
                       })
                       );
-                      
-                      // Parse the JSON response and store it.
                       const json = await response.json();
                       this.result = json;
-                      
-                      // Parse the data property for each item in storage.
+    
+                      // Parse the data.
                       this.result.storage.forEach((item) => {
                         item.data = JSON.parse(item.data);
                       });
                     } catch(error) {
-                      console.log(error)
+                      console.log(error);
                     }
+                  },
+
+                  /**
+                   * Connect to keplr and retrieve account information
+                   */ 
+                  async connectAndGetDataFromKeplr() {
+                  // Wait 5 seconds for dyson to load
+                    await new Promise((resolve) => setTimeout(resolve, 5000));
+                    await this.connectToKeplr();
+                    await this.getUserData();
+                  },
+
+                  
+                  /**
+                   * Get data from the api to display posts and replys.
+                   */
+                  async getData() {
+                    await this.fetchDataFromApiAndParse();
                   },
                   
                   /**
@@ -396,62 +411,18 @@
                  */
                 async mounted() {
                   this.loading = true;
-                  
-                  // Check that kelpr is installed
+  
+                  // Check that keplr is installed
                   if (window.getOfflineSigner) {
-                    try {
-                      // Fetch the data.
-                      const response = await fetch(
-                        this.api +
-                        "?" +
-                        new URLSearchParams({
-                          prefix: "dys1c2t867e7x33jw8c8mrl6cdvn89934k82tjvnqr/post/",
-                        })
-                      );
-                      const json = await response.json();
-                      this.result = json;
-                      
-                      // Parse the data.
-                      this.result.storage.forEach((item) => {
-                        item.data = JSON.parse(item.data);
-                      });
-                  
-                      // Connect to keplr after 5 seconds to give dyson chance to load
-                      setTimeout(async () => {
-                        await this.connectToKeplr();
-                        await this.getUserData();
-                        this.loading = false;
-                      }, 5000);
-                    } catch(error) {
-                      console.log(error)
-                    }
+                    await this.fetchDataFromApiAndParse();
+                    await this.connectAndGetDataFromKeplr();
                   } else {
-                    // Run when keplr is not installed.
-                    try {
-                      // Fetch data from storage.
-                      const response = await fetch(
-                      this.api +
-                      "?" +
-                      new URLSearchParams({
-                        prefix: "dys1c2t867e7x33jw8c8mrl6cdvn89934k82tjvnqr/post/",
-                      })
-                      );
-                      const json = await response.json();
-                      this.result = json;
-                      
-                      // Parse the data.
-                      this.result.storage.forEach((item) => {
-                        item.data = JSON.parse(item.data);
-                      });
-                      
-                      // Set the loading state to false.
-                      this.loading = false;
-                    } catch(error) {
-                      console.log(error)
-                    }
+                    await this.fetchDataFromApiAndParse();
                   }
+  
+                  this.loading = false;
                 },
-                
+
                 computed: {
                   /**
                    * Computed property that returns the sorted storage.
