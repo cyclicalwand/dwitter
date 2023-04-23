@@ -172,9 +172,9 @@
               <div class="card-content">
                 <div class="content">
                 <p>Date posted: {{ item.data.date }}</p>
-                <p>Post id: {{ item.data.id }}</p>
+                <p v-if="isVisable">Post id: {{ item.data.id }}</p>
                 <p>Author: {{ getUsernameFromAddress(item.data.author) }}</p>
-                 <p>Message: {{ item.data.body }}</p>
+                <p>Message: {{ item.data.body }}</p>
               <div v-if="item.data && item.data.replies">
                 <h2 class="is-size-5">Replies</h2>
                 <p>Number of replies: {{ Object.values(item.data.replies).length }}</p>
@@ -194,7 +194,7 @@
                   <div class="card-content">
                     <div class="content">
                       <p>Date: {{ reply.date }}</p>
-                      <p>Reply id: {{reply.reply_id}}</p>
+                      <p v-if="isVisable">Reply id: {{reply.reply_id}}</p>
                       <p>Author: {{ getUsernameFromAddress(reply.author) }}</p>
                       <p>Message: {{ reply.body }}</p>
                       <div class="buttons is-right">
@@ -249,8 +249,8 @@
           </div>
         </div>
       </section>
-      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@2.0.0/testnetapp.js"></script>
       <footer class="footer has-text-centered">Dyson message board</footer>
+      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@2.0.0/testnetapp.js"></script>
             </div>
           </body>
         </html>
