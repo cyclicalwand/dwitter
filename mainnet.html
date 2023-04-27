@@ -8,7 +8,7 @@
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
             <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
             <script src="/_/dyson.js"></script>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@v2.0.1/style.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@v2.0.4/style.css">
             </head>
           <body id="app" class="wrapper">
             <div v-if="loading" class="center-box">
@@ -102,6 +102,9 @@
                 <div class="block">
                   <button v-if="!isConnected" @click.prevent="connectToKeplr" class=" mt-4 button is-primary is-light">
                     <strong>Connect Keplr</strong>
+                    <span class="icon is-small">
+                      <i class="fa fa-sign-in fa-lg"></i>
+                    </span>
                   </button>
                   <div v-else>
                     <div v-if="userData">
@@ -118,6 +121,9 @@
                       <p>Account name: {{ accountData.name }}</p>
                       <button class="button is-primary is-light" @click.prevent="disconnectKeplr">
                         <strong>Disconnect wallet</strong>
+                        <span class="icon is-small">
+                          <i class="fa fa-sign-out fa-lg"></i>
+                        </span>
                       </button>
                     </div>
                 </div>
@@ -178,18 +184,18 @@
               <div v-if="item.data && item.data.replies">
                 <h2 class="is-size-5">Replies</h2>
                 <p>Number of replies: {{ Object.values(item.data.replies).length }}</p>
-                <span v-if="!item.showReplies">
-                  <button class="button is-info is-outlined is-small mb-2" @click.prevent="item.showReplies = true">
+                <span v-if="item.showReplies">
+                  <button class="button is-info is-outlined is-small mb-2" @click.prevent="item.showReplies = false">
                     Show replies
                   </button>
                 </span>
-                <span v-if="item.showReplies">
-                  <button class="button is-info is-outlined is-small mb-2" @click.prevent="item.showReplies = false">
+                <span v-if="!item.showReplies">
+                  <button class="button is-info is-outlined is-small mb-2" @click.prevent="item.showReplies = true">
                     Hide replies
                   </button>
                 </span>
               </div>
-              <div v-if="item.showReplies">
+              <div v-if="!item.showReplies">
                 <div v-if="item.data && item.data.replies" v-for="reply in item.data.replies" class="card mb-2">
                   <div class="card-content">
                     <div class="content">
@@ -197,13 +203,24 @@
                       <p>Author: {{ getUsernameFromAddress(reply.author) }}</p>
                       <p v-if="isVisable">Reply id: {{ reply.reply_id }}</p>
                       <p>Message: {{ reply.body }}</p>
-                      <div class="buttons is-right">
-                        <button class="button is-danger is-small is-oulined" @click.prevent="deleteReply(item.data.id, reply.reply_id)">
+                      <div class="buttons is-right" v-if="!reply.showDeleteReplyConfirmation">
+                        <button class="button is-danger is-small is-oulined" @click.prevent="reply.showDeleteReplyConfirmation = true">
                           <span>Delete reply</span>
                           <span class="icon is-small">
                             <i class="fa fa-times fa-lg"></i>
                           </span>
                         </button>
+                      </div>
+                      <div v-if="reply.showDeleteReplyConfirmation">
+                        <p class="has-text-right">Are you sure you want to delete this reply?</p>
+                        <div class="buttons is-right">
+                          <button class="button is-danger is-small is-oulined" @click.prevent="deleteReply(item.data.id, reply.reply_id)">
+                            <span>Yes</span>
+                          </button>
+                          <button class="button is-primary is-small is-oulined" @click.prevent="reply.showDeleteReplyConfirmation = false">
+                            <span>No</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -230,7 +247,7 @@
                         </button>
                       </div>
                       <div v-if="item.showConfirmation">
-                        <p>Are you sure you want to delete this post?</p>
+                        <p class="has-text-right">Are you sure you want to delete this post?</p>
                         <div class="buttons is-right">
                           <button class="button is-danger is-oulined" @click.prevent="deletePost(item.data.id)">
                             <span>Yes</span>
@@ -245,12 +262,16 @@
                 </div>  
               </div>
               </div>
+              <button v-if="loadMoreButton" class="button is-info" @click.prevent="fetchMoreResults">Load more posts</button>
             </div>
           </div>
         </div>
       </section>
-      <footer class="footer has-text-centered">Dyson message board</footer>
-      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@2.0.1/app.js"></script>
+      <footer class="footer has-text-centered">
+        <p class="is-size-4">Dyson message board</p>
+        <p>&#169; 2022 - {{ currentYear }}</p>
+        </footer>
+      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@2.0.4/app.js"></script>
      </div>
     </body>
    </html>
