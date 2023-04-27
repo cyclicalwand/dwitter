@@ -6,7 +6,7 @@
               const app = Vue.createApp({
                 data() {
                   return {
-                    result: null,
+                    result: {},
                     sortedItems: [],
                     newPost: "",
                     newReply: "",
@@ -26,9 +26,12 @@
                     showResultsBox: false,
                     api: 'https://dys-api.dysonprotocol.com/dyson/storageprefix',
                     showConfirmation: false,
+                    showDeleteReplyConfirmation: false,
                     replyId: "",
                     showReplies: false,
                     isVisable: false,
+                    key: "",
+                    loadMoreButton: true,
                   }
                 },
                 
@@ -71,7 +74,7 @@
                   
                   /**
                    * Fetch data fromthe api and parse in to app
-                   */ 
+                   */
                   async fetchDataFromApiAndParse() {
                     try {
                       const response = await fetch(
@@ -79,20 +82,63 @@
                       "?" +
                       new URLSearchParams({
                         prefix: "dys1c2t867e7x33jw8c8mrl6cdvn89934k82tjvnqr/post/",
+                        "pagination.key": this.key,
+                        "pagination.limit": "10",
                       })
                       );
                       const json = await response.json();
                       this.result = json;
-    
+                      
                       // Parse the data.
                       this.result.storage.forEach((item) => {
                         item.data = JSON.parse(item.data);
                       });
+                      
+                       // Update the key for the next page.
+                      if (this.result.pagination.next_key !== this.key) {
+                        this.key = this.result.pagination.next_key;
+                      } else {
+                        loadMoreButton = false;
+                      }
                     } catch(error) {
                       console.log(error);
                     }
                   },
+                  
+                  /**
+                   * Load more results and add to the bottom of existing results
+                   */
+                   async fetchMoreResults() {
+                    try {
+                      const response = await fetch(
+                      this.api +
+                      "?" +
+                      new URLSearchParams({
+                        prefix: "dys1c2t867e7x33jw8c8mrl6cdvn89934k82tjvnqr/post/",
+                          "pagination.key": this.key,
+                          "pagination.limit": "10",
+                      })
+                      );
+                      const json = await response.json();
 
+                      // Parse the data.
+                      json.storage.forEach((item) => {
+                        item.data = JSON.parse(item.data);
+                      });
+
+                      // Append the new results to the existing ones.
+                      if (json.storage.length === 0) {
+                        this.loadMoreButton = false;
+                      } else if (json.pagination.next_key !== this.key) {
+                        this.result.storage = this.result.storage.concat(json.storage);
+                        // Update the key for the next page.
+                        this.key = json.pagination.next_key;
+                      }
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  },
+                  
                   /**
                    * Connect to keplr and retrieve account information
                    */ 
@@ -108,6 +154,7 @@
                    * Get data from the api to display posts and replys.
                    */
                   async getData() {
+                    this.key = "";
                     await this.fetchDataFromApiAndParse();
                   },
                   
@@ -474,6 +521,15 @@
                   isUserLoggedIn() {
                     return !!this.accountData && !!this.accountData.bech32Address;
                   },
+                  
+                  /**
+                   * Get the current year for the footer
+                   */
+                   currentYear() {
+                     const now = new Date();
+                     const thisYear = now.getFullYear();
+                     return thisYear;
+                   },
                   
                 },
               })
