@@ -8,86 +8,88 @@
             <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
             <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
             <script src="/_/dyson.js"></script>
-            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@v2.0.4/style.css">
+            <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@v2.0.5/style.css">
             </head>
           <body id="app" class="wrapper">
-            <div v-if="loading" class="center-box">
-              <div class="box">
-                <div class="columns is-centered">
-                  <progress class="progress is-small is-primary" max="100">50%</progress>
-                </div>
-                <p class="has-text-centered">Loading...</p>
-              </div>
-            </div>
-            <div v-else>
-            <nav class="navbar is-fixed-top is-primary is-spaced has-shadow" role="navigation" aria-label="main navigation">
-              <div class="navbar-brand">
-                <div class="navbar-item is-size-3 mr-6">
-                  Dyson message board
-                </div>
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" @click="toggleMenu" :class="{ 'is-active': isMenuActive }">
-                  <span aria-hidden="true"></span>
-                  <span aria-hidden="true"></span>
-                  <span aria-hidden="true"></span>
+    <div v-if="loading" class="center-box">
+      <div class="box">
+        <div class="columns is-centered">
+          <progress class="progress is-small is-primary" max="100">50%</progress>
+        </div>
+        <p class="has-text-centered">Loading...</p>
+      </div>
+    </div>
+    <div v-else>
+      <nav class="navbar is-fixed-top is-primary is-spaced has-shadow" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+          <div class="navbar-item is-size-3 mr-6">
+            Dyson message board
+          </div>
+          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" @click="toggleMenu" :class="{ 'is-active': isMenuActive }">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          </a>
+        </div>
+        <div id="navbarSwitch" class="navbar-menu" :class="{ 'is-active': isMenuActive }">
+          <div class="navbar-start">
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link is-arrowless is-size-5">
+              About
+              </a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item">
+                Onchain message board
                 </a>
               </div>
-              <div id="navbarSwitch" class="navbar-menu" :class="{ 'is-active': isMenuActive }">
-                <div class="navbar-start">
-                  <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link is-arrowless is-size-5">
-                        About
-                    </a>
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item">
-                            Onchain message board
-                        </a>
-                    </div>
-                  </div>
-                  <div class="navbar-item has-dropdown is-hoverable">
-                    <a href="https://profilepage.dysonvalidator.com/" class="navbar-link is-arrowless is-size-5">
-                        Profile
-                    </a>
-                    <div class="navbar-dropdown">
-                      <a class="navbar-item" href="https://profilepage.dysonvalidator.com/" class="has-text-black">
-                        Create or edit your profile
-                      </a>
-                    </div>
-                  </div>
-                  <div class="navbar-item has-dropdown is-hoverable">
-                    <div class="navbar-link is-arrowless is-size-5">
-                        Other apps
-                    </div>
-                    <div class="navbar-dropdown">
-                      <ul>
-                      <li><a class="navbar-item" href="https://namechecker.dysonvalidator.com/" class="has-text-black">
-                         Dys name manager
-                      </a></li>
-                      <li><a class="navbar-item" href="https://secondarymarket.dysonvalidator.com/" class="has-text-black">
-                          Dys names secondary market
-                       </a></li>
-                    </div>
-                  </div>
-                  <div class="navbar-item has-dropdown is-hoverable">
-                    <div class="navbar-link is-arrowless is-size-5">
-                        Dyson protocol info
-                    </div>
-                    <div class="navbar-dropdown">
-                      <ul>
-                        <li><a href="https://dysonprotocol.com/" target="_blank" class="navbar-item">Homepage</a></li>
-                        <li><a href="https://docs.dysonprotocol.com/" target="_blank" class="navbar-item">Docs</a></li>
-                        <li><a href="https://twitter.com/DysonProtocol" target="_blank" class="navbar-item">Twitter</a></li>
-                        <li><a href="https://discord.gg/BNHRHGdeNj" target="_blank" class="navbar-item">Discord</a></li>
-                        <li><a href="https://medium.com/@dysonprotocol" target="_blank" class="navbar-item">Medium</a></li>
-                        <li><a href="https://gitlab.com/dysonproject/dyson" target="_blank" class="navbar-item">Gitlab</a></li>
-                      </ul>
-                    </div>
-                </div>
             </div>
-            <div class="navbar-end">
-              <div class="navbar-item">
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a href="https://profilepage.dysonvalidator.com/" class="navbar-link is-arrowless is-size-5">
+              Profile
+              </a>
+              <div class="navbar-dropdown">
+                <a class="navbar-item" href="https://profilepage.dysonvalidator.com/" class="has-text-black">
+                Create or edit your profile
+                </a>
               </div>
             </div>
-         </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <div class="navbar-link is-arrowless is-size-5">
+                Other apps
+              </div>
+              <div class="navbar-dropdown">
+                <ul>
+                <li><a class="navbar-item" href="https://namechecker.dysonvalidator.com/" class="has-text-black">
+                  Dys name manager
+                  </a>
+                </li>
+                <li><a class="navbar-item" href="https://secondarymarket.dysonvalidator.com/" class="has-text-black">
+                  Dys names secondary market
+                  </a>
+                </li>
+              </div>
+            </div>
+            <div class="navbar-item has-dropdown is-hoverable">
+              <div class="navbar-link is-arrowless is-size-5">
+                Dyson protocol info
+              </div>
+              <div class="navbar-dropdown">
+                <ul>
+                  <li><a href="https://dysonprotocol.com/" target="_blank" class="navbar-item">Homepage</a></li>
+                  <li><a href="https://docs.dysonprotocol.com/" target="_blank" class="navbar-item">Docs</a></li>
+                  <li><a href="https://twitter.com/DysonProtocol" target="_blank" class="navbar-item">Twitter</a></li>
+                  <li><a href="https://discord.gg/BNHRHGdeNj" target="_blank" class="navbar-item">Discord</a></li>
+                  <li><a href="https://medium.com/@dysonprotocol" target="_blank" class="navbar-item">Medium</a></li>
+                  <li><a href="https://gitlab.com/dysonproject/dyson" target="_blank" class="navbar-item">Gitlab</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="navbar-end">
+            <div class="navbar-item">
+            </div>
+          </div>
+        </div>
       </nav>
       <section class="section">
         <div class="container">
@@ -101,10 +103,10 @@
               <div class="content">
                 <div class="block">
                   <button v-if="!isConnected" @click.prevent="connectToKeplr" class=" mt-4 button is-primary is-light">
-                    <strong>Connect Keplr</strong>
-                    <span class="icon is-small">
-                      <i class="fa fa-sign-in fa-lg"></i>
-                    </span>
+                  <strong>Connect Keplr</strong>
+                  <span class="icon is-small">
+                  <i class="fa fa-sign-in fa-lg"></i>
+                  </span>
                   </button>
                   <div v-else>
                     <div v-if="userData">
@@ -114,58 +116,68 @@
                       </figure>
                       <p class="is-size-4">{{ userData.username }}</p>
                       <button class="button is-primary is-light" @click.prevent="disconnectKeplr">
-                        <strong>Disconnect wallet</strong>
+                      <strong>Disconnect wallet</strong>
                       </button>
                     </div>
                     <div v-else>
                       <p>Account name: {{ accountData.name }}</p>
                       <button class="button is-primary is-light" @click.prevent="disconnectKeplr">
-                        <strong>Disconnect wallet</strong>
-                        <span class="icon is-small">
-                          <i class="fa fa-sign-out fa-lg"></i>
-                        </span>
+                      <strong>Disconnect wallet</strong>
+                      <span class="icon is-small">
+                      <i class="fa fa-sign-out fa-lg"></i>
+                      </span>
                       </button>
                     </div>
+                  </div>
                 </div>
               </div>
-            </div>
             </div>
             <div class="column is-four-fifths">
               <div class="content">
                 <div v-if="showResultsBox" class="result-box">
-                <div class="card">
-                  <div class="card-content">
-                    <div class="content" v-text="resultText">
+                  <div class="card">
+                    <div class="card-content">
+                      <div class="content" v-text="resultText">
+                      </div>
+                      <button class="button" @click="hideResultBox">Close</button>
                     </div>
-                    <button class="button" @click="hideResultBox">Close</button>
                   </div>
                 </div>
-              </div>
-              <h1 class="title">Submit a new post</h1>
-              <form>
-                <textarea v-model="newPost" class="textarea is-primary" id="newPost" maxlength="400" placeholder="Submit a post"></textarea>
-                <p>Characters left: {{ remainingChars }} characters left</p>
-                <div class="buttons">
+                <h1 class="title">Submit a new post</h1>
+                <form>
+                  <textarea v-model="newPost" class="textarea is-primary" id="newPost" maxlength="400" placeholder="Submit a post"></textarea>
+                  <p>Characters left: {{ remainingChars }} characters left</p>
+                  <div class="buttons">
                     <button @click.prevent="submit" class="button is-primary is-outlined">
-                      <span>Post</span>
-                      <span class="icon is-small">
-                        <i class="fa fa-comment fa-lg"></i>
-                      </span>
+                    <span>Post</span>
+                    <span class="icon is-small">
+                    <i class="fa fa-comment fa-lg"></i>
+                    </span>
                     </button>
-                </div>
-              </form>
+                  </div>
+                </form>
               </div>
-            <h1 class="is-size-4 has-text-left">Current posts</h1>
-            <p>Number of posts: {{ Object.keys(sortedStorage).length }}</p>
-            <p>
-              <label class="checkbox">
-                <input type="checkbox"  v-model="showOnlyMyPosts" :disabled="!isUserLoggedIn">
-                Show only my posts
-              </label>
-             </p>
-            <div class="dropdown is-active">
-              <div class="dropdown-trigger">
-                  <span><p class="is-size-6">Sort by:</p></span>
+              <h1 class="is-size-4 has-text-left">Current posts</h1>
+              <p>Number of posts: {{ Object.keys(sortedStorage).length }}</p>
+              <p>
+                <label class="radio">
+                <input type="radio" v-model="postFilterOption" value="all">
+                All posts
+                </label>
+                <label class="radio">
+                <input type="radio" v-model="postFilterOption" value="mine" :disabled="!isUserLoggedIn">
+                My posts
+                </label>
+                <label class="radio">
+                <input type="radio" v-model="postFilterOption" value="following" :disabled="!isUserLoggedIn">
+                Following posts
+                </label>
+              </p>
+              <div class="dropdown is-active">
+                <div class="dropdown-trigger">
+                  <span>
+                    <p class="is-size-6">Sort by:</p>
+                  </span>
                   <div class="select">
                     <select id="sort-select" v-model="sortOption">
                       <option class="dropdown-item" value="newest">Newest</option>
@@ -173,94 +185,146 @@
                     </select>
                   </div>
                 </div>
-            </div>
-            <div v-if="result" v-for="item in sortedStorage" :key="item.index" class="card mb-4">
-              <div class="card-content">
-                <div class="content">
-                <p>Date posted: {{ item.data.date }}</p>
-                <p v-if="isVisable">Post id: {{ item.data.id }}</p>
-                <p>Author: {{ getUsernameFromAddress(item.data.author) }}</p>
-                 <p>Message: {{ item.data.body }}</p>
-              <div v-if="item.data && item.data.replies">
-                <h2 class="is-size-5">Replies</h2>
-                <p>Number of replies: {{ Object.values(item.data.replies).length }}</p>
-                <span v-if="item.showReplies">
-                  <button class="button is-info is-outlined is-small mb-2" @click.prevent="item.showReplies = false">
-                    Show replies
-                  </button>
-                </span>
-                <span v-if="!item.showReplies">
-                  <button class="button is-info is-outlined is-small mb-2" @click.prevent="item.showReplies = true">
-                    Hide replies
-                  </button>
-                </span>
               </div>
-              <div v-if="!item.showReplies">
-                <div v-if="item.data && item.data.replies" v-for="reply in item.data.replies" class="card mb-2">
-                  <div class="card-content">
-                    <div class="content">
-                      <p>Date: {{ reply.date }}</p>
-                      <p>Author: {{ getUsernameFromAddress(reply.author) }}</p>
-                      <p v-if="isVisable">Reply id: {{ reply.reply_id }}</p>
-                      <p>Message: {{ reply.body }}</p>
-                      <div class="buttons is-right" v-if="!reply.showDeleteReplyConfirmation">
-                        <button class="button is-danger is-small is-oulined" @click.prevent="reply.showDeleteReplyConfirmation = true">
-                          <span>Delete reply</span>
-                          <span class="icon is-small">
-                            <i class="fa fa-times fa-lg"></i>
-                          </span>
-                        </button>
-                      </div>
-                      <div v-if="reply.showDeleteReplyConfirmation">
-                        <p class="has-text-right">Are you sure you want to delete this reply?</p>
-                        <div class="buttons is-right">
-                          <button class="button is-danger is-small is-oulined" @click.prevent="deleteReply(item.data.id, reply.reply_id)">
-                            <span>Yes</span>
+              <div v-if="result" v-for="item in sortedStorage" :key="item.index" class="card mb-4">
+                <div class="card-content">
+                  <div class="content">
+                    <div class="media">
+                      <div class="media-left">
+                        <figure class="image is-64x64">
+                          <img class="is-rounded" :src="posterData[item.data.author]?.profile_photo || 'https://i.ibb.co/SnBmvHf/user-icon.png'" alt="Profile photo">
+                        </figure>
+                        {{ getUsernameFromAddress(item.data.author) }}
+                        <div class="buttons">
+                          <button v-if="!isFollowingUser(item.data.author)" class="button is-small is-outlined is-link is-rounded" @click.prevent="followUser(item.data.author)">
+                            Follow
                           </button>
-                          <button class="button is-primary is-small is-oulined" @click.prevent="reply.showDeleteReplyConfirmation = false">
-                            <span>No</span>
+                          <button v-else class="button is-small is-outlined is-danger is-rounded" @click.prevent="unfollowUser(item.data.author)">
+                            Unfollow
                           </button>
                         </div>
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-                  <div>
-                    <form>
-                      <textarea v-model="item.newReply" class="textarea" maxlength="400" placeholder="submit a reply"></textarea>
-                      <p>Maximum 400 characters</p>
-                      <div class="buttons">
-                        <button class="button is-primary is-outlined" @click.prevent="submitReply(item.data.id, item)">
+                    <p>{{ item.data.date }}</p>
+                    <p v-if="isVisable">Post id: {{ item.data.id }}</p>
+                    <div class="card">
+                      <div class="card-content">
+                        <div class="content">
+                          <i class="fa fa-quote-left fa-sm"></i>
+                            {{ item.data.body }}
+                          <i class="fa fa-quote-right fa-sm"></i>
+                        </div>
+                        </div>
+                        <footer class="card-footer">
+                          <p class="card-footer-item is-size-7">{{ posterData[item.data.author]?.about }}</p>
+                        </footer>
+                    </div>
+                    <div v-if="item.data && item.data.replies">
+                      <h2 class="is-size-5">Replies</h2>
+                      <p>Number of replies: {{ Object.values(item.data.replies).length }}</p>
+                      <span v-if="item.showReplies">
+                      <button class="button is-info is-outlined is-small mb-2" @click.prevent="item.showReplies = false">
+                      Show replies
+                      </button>
+                      </span>
+                      <span v-if="!item.showReplies">
+                      <button class="button is-info is-outlined is-small mb-2" @click.prevent="item.showReplies = true">
+                      Hide replies
+                      </button>
+                      </span>
+                    </div>
+                    <div v-if="!item.showReplies">
+                      <div v-if="item.data && item.data.replies" v-for="reply in item.data.replies" class="card mb-2">
+                        <div class="card-content">
+                          <div class="content">
+                            <div class="media">
+                              <div class="media-left">
+                                <figure class="image is-32x32">
+                                  <img class="is-rounded" :src="replyData[reply.author]?.profile_photo || 'https://i.ibb.co/SnBmvHf/user-icon.png'" alt="Profile photo">
+                                </figure>
+                                {{ getUsernameFromAddress(reply.author) }}
+                                <div class="buttons">
+                                  <button v-if="!isFollowingUser(reply.author)" class="button is-small is-outlined is-link is-rounded" @click.prevent="followUser(reply.author)">
+                                    Follow
+                                  </button>
+                                  <button v-else class="button is-small is-outlined is-danger is-rounded" @click.prevent="unfollowUser(reply.author)">
+                                    Unfollow
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <p>{{ reply.date }}</p>
+                            <p v-if="isVisable">Reply id: {{ reply.reply_id }}</p>
+                            <div class="card">
+                      <div class="card-content">
+                        <div class="content">
+                          <i class="fa fa-quote-left fa-sm"></i>
+                            {{ reply.body }}
+                          <i class="fa fa-quote-right fa-sm"></i>
+                        </div>
+                        </div>
+                        <footer class="card-footer">
+                          <p class="card-footer-item is-size-7">{{ posterData[reply.author]?.about }}</p>
+                        </footer>
+                    </div>
+                            <div class="buttons is-right" v-if="!reply.showDeleteReplyConfirmation">
+                              <button class="button is-danger is-small is-oulined" @click.prevent="reply.showDeleteReplyConfirmation = true">
+                              <span>Delete reply</span>
+                              <span class="icon is-small">
+                              <i class="fa fa-times fa-lg"></i>
+                              </span>
+                              </button>
+                            </div>
+                            <div v-if="reply.showDeleteReplyConfirmation">
+                              <p class="has-text-right">Are you sure you want to delete this reply?</p>
+                              <div class="buttons is-right">
+                                <button class="button is-danger is-small is-oulined" @click.prevent="deleteReply(item.data.id, reply.reply_id)">
+                                <span>Yes</span>
+                                </button>
+                                <button class="button is-primary is-small is-oulined" @click.prevent="reply.showDeleteReplyConfirmation = false">
+                                <span>No</span>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <form>
+                        <textarea v-model="item.newReply" class="textarea" maxlength="400" placeholder="submit a reply"></textarea>
+                        <p>Maximum 400 characters</p>
+                        <div class="buttons">
+                          <button class="button is-primary is-outlined" @click.prevent="submitReply(item.data.id, item)">
                           <span>Reply</span>
                           <span class="icon is-small">
-                            <i class="fa fa-reply fa-lg"></i>
+                          <i class="fa fa-reply fa-lg"></i>
                           </span>
-                        </button>
+                          </button>
                         </div>
                         <div class="buttons is-right" v-if="!item.showConfirmation">
-                        <button class="button is-danger is-oulined" @click.prevent="item.showConfirmation = true">
+                          <button class="button is-danger is-oulined" @click.prevent="item.showConfirmation = true">
                           <span>Delete post</span>
                           <span class="icon is-small">
-                            <i class="fa fa-times fa-lg"></i>
+                          <i class="fa fa-times fa-lg"></i>
                           </span>
-                        </button>
-                      </div>
-                      <div v-if="item.showConfirmation">
-                        <p class="has-text-right">Are you sure you want to delete this post?</p>
-                        <div class="buttons is-right">
-                          <button class="button is-danger is-oulined" @click.prevent="deletePost(item.data.id)">
-                            <span>Yes</span>
-                          </button>
-                          <button class="button is-primary is-oulined" @click.prevent="item.showConfirmation = false">
-                            <span>No</span>
                           </button>
                         </div>
-                      </div>
-                    </form>
+                        <div v-if="item.showConfirmation">
+                          <p class="has-text-right">Are you sure you want to delete this post?</p>
+                          <div class="buttons is-right">
+                            <button class="button is-danger is-oulined" @click.prevent="deletePost(item.data.id)">
+                            <span>Yes</span>
+                            </button>
+                            <button class="button is-primary is-oulined" @click.prevent="item.showConfirmation = false">
+                            <span>No</span>
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
                   </div>
-                </div>  
-              </div>
+                </div>
               </div>
               <button v-if="loadMoreButton" class="button is-info" @click.prevent="fetchMoreResults">Load more posts</button>
             </div>
@@ -270,8 +334,8 @@
       <footer class="footer has-text-centered">
         <p class="is-size-4">Dyson message board</p>
         <p>&#169; 2022 - {{ currentYear }}</p>
-        </footer>
-      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@2.0.4/testnetapp.js"></script>
+      </footer>
+      <script src="https://cdn.jsdelivr.net/gh/cyclicalwand/dwitter@2.0.5/testnetapp.js"></script>
             </div>
           </body>
         </html>
