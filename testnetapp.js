@@ -313,6 +313,7 @@
                */
                disconnectKeplr() {
                  this.accountData = {};
+                 this.userData = {};
                  this.isConnected = false;
                },
               
@@ -547,7 +548,7 @@
               async followUser(address) {
                 try {
                   // check the user has a profile and display error message
-                  if(!this.userData){
+                  if(!this.userData || !this.userData.username){
                     this.resultText = `You need to create a profile to follow users.`;
                     this.showResultsBox = true;
                   } else {
@@ -594,7 +595,7 @@
                 async unfollowUser(address) {
                   try {
                     // Check if user ha a profile and display error message
-                    if(!this.userData){
+                    if(!this.userData || !this.userData.username){
                       this.resultText = `You need to log in to unfollow users.`;
                       this.showResultsBox = true;
                     } else {
