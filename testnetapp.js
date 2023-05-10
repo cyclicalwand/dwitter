@@ -300,8 +300,13 @@
                   
                   // Save account data
                   this.accountData = accountData;
+                          
+                  // Run getUserData if empty
+                  if (Object.keys(this.userData).length === 0) {
+                    await this.getUserData();
+                  }
                   
-                  // Set isConnected to true and updtae
+                  // Set isConnected to true and update
                   this.isConnected = true;
                 } catch (e) {
                   console.log("Keplr error:", e);
@@ -314,6 +319,7 @@
                disconnectKeplr() {
                  this.accountData = {};
                  this.userData = {};
+                 this.postFilterOption = 'all';
                  this.isConnected = false;
                },
               
