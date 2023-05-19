@@ -20,6 +20,7 @@ minute = now.minute
 date_time_str = f"{day:02d}/{month:02d}/{year}  -  {hour:02d}:{minute:02d}"
 reply_id_str = f"{day:02d}{month:02d}{year}{hour:02d}{minute:02d}"
 
+
 def new_post(body: str):
     post_id = str(BLOCK_INFO.height)
 
@@ -39,6 +40,8 @@ def new_post(body: str):
         data=json.dumps(data),
         force=True,
     )
+
+
 def add_reply(body: str, post_id: str):
 
     # Query blockchain
@@ -72,6 +75,7 @@ def add_reply(body: str, post_id: str):
         force=True,
     )
 
+
 def delete_post(post_id: str):
 
     parent_query = _chain(
@@ -99,6 +103,7 @@ def delete_post(post_id: str):
         )
     else:
         return ["Error, you are not the original author"]
+
 
 def delete_replies(post_id: str, reply_id: str):
 
