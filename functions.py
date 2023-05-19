@@ -22,58 +22,65 @@ reply_id_str = f"{day:02d}{month:02d}{year}{hour:02d}{minute:02d}"
 
 
 def new_post(body: str):
-    post_id = str(BLOCK_INFO.height)
+    if len(body) > 19:
+        post_id = str(BLOCK_INFO.height)
 
-    data = {
-        "body": body,
-        "id": post_id,
-        "date": date_time_str,
-        "author": CALLER,
-    }
+        data = {
+            "body": body,
+            "id": post_id,
+            "date": date_time_str,
+            "author": CALLER,
+        }
 
-    print(data)
+        print(data)
 
-    return _chain(
-        "dyson/sendMsgCreateStorage",
-        creator=script_creator,
-        index=script_creator + "/post/" + post_id,
-        data=json.dumps(data),
-        force=True,
-    )
+        return _chain(
+            "dyson/sendMsgCreateStorage",
+            creator=script_creator,
+            index=script_creator + "/post/" + post_id,
+            data=json.dumps(data),
+            force=True,
+        )
+    else:
+        return ["Post must be at least 20 characters"]
 
 
 def add_reply(body: str, post_id: str):
 
-    # Query blockchain
-    parent_query = _chain(
-        "dyson/QueryStorage",
-        index=script_creator + "/post/" + post_id,
-    )
-    if parent_query["error"]:
-        return parent_query["error"]
-    # get data
-    parent_data = json.loads(parent_query["result"]["storage"]["data"])
+    if len(body) > 5:
 
-    # Initialise the replies list if it does not exist
-    if "replies" not in parent_data:
-        parent_data["replies"] = []
-    reply = {
-        "body": body,
-        "author": CALLER,
-        "date": date_time_str,
-        "reply_id": reply_id_str,
-    }
+        # Query blockchain
+        parent_query = _chain(
+            "dyson/QueryStorage",
+            index=script_creator + "/post/" + post_id,
+        )
+        if parent_query["error"]:
+            return parent_query["error"]
+        # get data
+        parent_data = json.loads(parent_query["result"]["storage"]["data"])
 
-    parent_data["replies"].append(reply)
+        # Initialise the replies list if it does not exist
+        if "replies" not in parent_data:
+            parent_data["replies"] = []
+            reply = {
+                "body": body,
+                "author": CALLER,
+                "date": date_time_str,
+                "reply_id": reply_id_str,
+            }
 
-    # update chain
-    _chain(
-        "dyson/sendMsgUpdateStorage",
-        creator=script_creator,
-        index=script_creator + "/post/" + post_id,
-        data=json.dumps(parent_data),
-        force=True,
-    )
+            parent_data["replies"].append(reply)
+
+            # update chain
+            _chain(
+                "dyson/sendMsgUpdateStorage",
+                creator=script_creator,
+                index=script_creator + "/post/" + post_id,
+                data=json.dumps(parent_data),
+                force=True,
+            )
+    else:
+        return ["Reply should be at least 6 characters"]
 
 
 def delete_post(post_id: str):
