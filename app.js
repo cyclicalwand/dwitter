@@ -24,7 +24,7 @@
                 showOnlyMyPosts: false,
                 resultText: "",
                 showResultsBox: false,
-                api: 'https://api-dys-testnet.dysonvalidator.com/dyson/storageprefix',
+                api: 'https://dys-api.dysonprotocol.com/dyson/storageprefix',
                 showConfirmation: false,
                 showDeleteReplyConfirmation: false,
                 replyId: "",
