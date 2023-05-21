@@ -169,7 +169,7 @@
                 My posts
                 </label>
                 <label class="radio">
-                <input type="radio" v-model="postFilterOption" value="following" :disabled="!isUserLoggedIn">
+                <input type="radio" v-model="postFilterOption" value="following" :disabled="!isUserLoggedIn || (!userData.following || userData.following.length === 0)">
                 Following posts
                 </label>
               </p>
