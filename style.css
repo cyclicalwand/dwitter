@@ -18,3 +18,9 @@
       z-index: 999;
       transform: translateX(-50%);
       }
+      .bordered-div {
+      border: 1px solid lightgrey;
+      }
+      body {
+      background-color: #F8F8F8;
+      }
