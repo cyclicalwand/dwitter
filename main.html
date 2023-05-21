@@ -169,7 +169,7 @@
                 My posts
                 </label>
                 <label class="radio">
-                <input type="radio" v-model="postFilterOption" value="following" :disabled="!isUserLoggedIn">
+                <input type="radio" v-model="postFilterOption" value="following" :disabled="!isUserLoggedIn || (!userData.following || userData.following.length === 0)">
                 Following posts
                 </label>
               </p>
@@ -186,7 +186,7 @@
                   </div>
                 </div>
               </div>
-              <div v-if="result" v-for="item in sortedStorage" :key="item.index" class="card mb-4">
+              <div v-if="result" v-for="item in sortedStorage" :key="item.index" class="card bordered-div mb-6">
                 <div class="card-content">
                   <div class="content">
                     <div class="media">
