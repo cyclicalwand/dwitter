@@ -359,8 +359,8 @@
                         "kwargs": JSON.stringify({ "body": this.newPost }),
                         "coins": ""
                       },
-                      "fee": [{ amount: '50', denom: 'dys' }],
-                      "gas": "500000"
+                      "fee": [{ amount: '500', denom: 'dys' }],
+                      "gas": "5000000"
                     });
                     
                     // Get the result of the transaction
@@ -415,8 +415,8 @@
                           "kwargs": JSON.stringify({ "body": item.newReply, "post_id": id }),
                           "coins": ""
                         },
-                        "fee": [{ amount: '100', denom: 'dys' }],
-                        "gas": "1000000"
+                        "fee": [{ amount: '1000', denom: 'dys' }],
+                        "gas": "10000000"
                       });
                     
                       if (result.code !== 0) {
@@ -477,7 +477,7 @@
                         "kwargs": JSON.stringify({ "post_id": id }),
                         "coins": ""
                       },
-                      "fee": [{ amount: '50', denom: 'dys' }], gas: "500000"
+                      "fee": [{ amount: '500', denom: 'dys' }], gas: "5000000"
                     });
                     
                     // Get the result of the transaction
@@ -524,7 +524,7 @@
                           "kwargs": JSON.stringify({ "post_id": id, "reply_id": replyId }),
                           "coins": ""
                         },
-                        "fee": [{ amount: '50', denom: 'dys' }], gas: "500000"
+                        "fee": [{ amount: '500', denom: 'dys' }], gas: "5000000"
                       });
                     
                       // Get the result of the transaction
@@ -571,10 +571,10 @@
                         "coins": ""
                       },
                       "fee": [{
-                        amount: '100',
+                        amount: '1000',
                         denom: 'dys'
                       }],
-                      "gas": "1000000"
+                      "gas": "10000000"
                     });
                     // Get data to display messages
                     const rawLogs = JSON.parse(result.rawLog);
@@ -618,10 +618,10 @@
                         "coins": ""
                       },
                       "fee": [{
-                        amount: '100',
+                        amount: '1000',
                         denom: 'dys'
                       }],
-                      "gas": "1000000"
+                      "gas": "10000000"
                       });
                       const rawLogs = JSON.parse(result.rawLog);
                       console.log(result.rawLog)
